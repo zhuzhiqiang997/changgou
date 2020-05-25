@@ -10,6 +10,9 @@
     <modules>
         <module>changgou_eureka</module>
         <module>changgou_common</module>
+        <module>changgou_common_db</module>
+        <module>changgou_service_api</module>
+        <module>changgou_service</module>
     </modules>
     <packaging>pom</packaging>
 

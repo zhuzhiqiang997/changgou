@@ -80,4 +80,159 @@ public class Page<T> implements Serializable {
     public long getUpper() {
         return currentpage > 1 ? currentpage - 1 : currentpage;
     }
+
+    //总共有多少页，即末页
+    public void setLast(int last) {
+        this.last = (int) (total % size == 0 ? total / size : (total / size) + 1);
+    }
+
+    /****
+     * 带有偏移量设置的分页
+     * @param total
+     * @param currentpage
+     * @param pageSize
+     * @param offsize
+     */
+    public Page(long total, int currentpage, int pageSize, int offsize) {
+        this.offsize = offsize;
+        initPage(total, currentpage, pageSize);
+    }
+
+    /****
+     *
+     * @param total   总记录数
+     * @param currentpage    当前页
+     * @param pageSize    每页显示多少条
+     */
+    public Page(long total, int currentpage, int pageSize) {
+        initPage(total, currentpage, pageSize);
+    }
+
+
+    /****
+     * 初始化分页
+     * @param total
+     * @param currentpage
+     * @param pageSize
+     */
+    private void initPage(long total, int currentpage, int pageSize) {
+        //总记录数
+        this.total = total;
+        //每页显示多少条
+        this.size = pageSize;
+
+        //计算当前页和数据库查询起始值以及总页数
+        setCurrentpage(currentpage, total, pageSize);
+
+        //分页计算
+        int leftcount = this.offsize,    //需要向上一页执行多少次
+                rightcount = this.offsize;
+
+        //起点页
+        this.lpage = currentpage;
+        //结束页
+        this.rpage = currentpage;
+
+        //2点判断
+        this.lpage = currentpage - leftcount;            //正常情况下的起点
+        this.rpage = currentpage + rightcount;        //正常情况下的终点
+
+        //页差=总页数和结束页的差
+        int topdiv = this.last - rpage;                //判断是否大于最大页数
+
+        /***
+         * 结束页
+         * 1、起点页<=0   结束页=|起点页|+1
+         * 2、起点页>0    结束页
+         */
+        this.rpage = this.lpage <= 0 ? this.rpage + (this.lpage * -1) + 1 : this.rpage;
+
+        /***
+         * 当起点页<=0  让起点页为第一页
+         * 否则不管
+         */
+        this.lpage = this.lpage <= 0 ? 1 : this.lpage;
+
+        this.rpage = Math.min(this.rpage, last);
+    }
+
+    public long getNext() {
+        return currentpage < last ? currentpage + 1 : last;
+    }
+
+    public void setNext(int next) {
+        this.next = next;
+    }
+
+    public long getCurrentpage() {
+        return currentpage;
+    }
+
+    public long getTotal() {
+        return total;
+    }
+
+    public void setTotal(long total) {
+        this.total = total;
+    }
+
+    public long getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public long getLast() {
+        return last;
+    }
+
+    public long getLpage() {
+        return lpage;
+    }
+
+    public void setLpage(int lpage) {
+        this.lpage = lpage;
+    }
+
+    public long getRpage() {
+        return rpage;
+    }
+
+    public void setRpage(int rpage) {
+        this.rpage = rpage;
+    }
+
+    public long getStart() {
+        return start;
+    }
+
+    public void setStart(long start) {
+        this.start = start;
+    }
+
+    public void setCurrentpage(long currentpage) {
+        this.currentpage = currentpage;
+    }
+
+    /**
+     * @return the list
+     */
+    public List<T> getList() {
+        return list;
+    }
+
+    /**
+     * @param list the list to set
+     */
+    public void setList(List<T> list) {
+        this.list = list;
+    }
+
+    public static void main(String[] args) {
+        int cpage = 17;
+        Page page = new Page(1001, cpage, 50, 7);
+        System.out.println("开始页:" + page.getLpage() + "__当前页：" + page.getCurrentpage() + "__结束页" + page.getRpage() + "____总页数：" + page.getLast());
+    }
 }
