@@ -3,18 +3,32 @@ package com.changgou.common.pojo;
 /**
  * 返回结果实体类
  *
- * @Param
- * @Return
  * @Author zhuzhiqiang
  * @Date 2020/5/25 8:54 上午
  */
 public class Result<T> {
 
-    private boolean flag;//是否成功
-    private Integer code;//返回码
-    private String message;//返回信息
+    /**
+     * 是否成功
+     */
+    private boolean flag;
 
-    private T data;//返回的数据
+    /**
+     * 用户类型
+     *
+     * @see StatusCode
+     */
+    private Integer code;
+
+    /**
+     * 返回信息
+     */
+    private String message;
+
+    /**
+     * 返回的数据
+     */
+    private T data;
 
     public Result(boolean flag, Integer code, String message, T data) {
         this.flag = flag;

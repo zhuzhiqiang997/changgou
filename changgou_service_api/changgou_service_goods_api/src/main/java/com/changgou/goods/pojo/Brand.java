@@ -1,18 +1,48 @@
 package com.changgou.goods.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Table(name = "tb_brand")
 public class Brand implements Serializable {
 
+    /**
+     * 品牌id
+     */
+    @NotBlank
     @Id
-    private Integer id;//品牌id
-    private String name;//品牌名称
-    private String image;//品牌图片地址
-    private String letter;//品牌的首字母
-    private Integer seq;//排序
+    private Integer id;
+
+    /**
+     * 品牌名称
+     */
+    @NotBlank
+    private String name;
+
+    /**
+     * 品牌图片地址
+     */
+    private String image;
+
+    /**
+     * 品牌的首字母
+     */
+    private String letter;
+
+    /**
+     * 排序
+     */
+    private Integer seq;
+
+    /**
+     * 忽略字段 不出现在json中
+     */
+    @JsonIgnore
+    private Long shouldIgnoreForJackson;
 
     public Integer getId() {
         return id;
